@@ -5,10 +5,4 @@ LOG_FILE="apache-access.log"
 [ ! -f "$LOG_FILE" ] && exit 1
 
 # Parse the log, count occurrences, and format output
-awk 'NF >= 9 {count[$1, $9]++} 
-     END {
-         for (key in count) {
-             split(key, arr, SUBSEP)
-             printf "%5d %s %s\n", count[key], arr[1], arr[2]
-         }
-     }' "$LOG_FILE" | sort -nr
+awk '{count[$1, $9]++} END {for (key in count) {split(key, arr, SUBSEP); printf "%5d %s %s\n", count[key], arr[1], arr[2]}}' apache-access.log | sort -nr
